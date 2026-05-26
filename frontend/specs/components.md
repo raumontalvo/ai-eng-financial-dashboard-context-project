@@ -49,18 +49,18 @@ No special empty state required.
 
 ---
 
-# Feature 2 — Anomaly Alerts Table
+## Feature 2 — Anomaly Alerts Table
 
-## Component Name
+### Component Name
 AnomalyAlertsTable
 
-## Purpose
+### Purpose
 Displays periods where outcome spending increased significantly compared to the rolling average.
 
-## Placement
+### Placement
 Below existing dashboard charts.
 
-## Inputs
+### Inputs
 
 | Field | Type | Required | Rules |
 |---|---|---|---|
@@ -68,16 +68,16 @@ Below existing dashboard charts.
 | start_date | string | No | YYYY-MM-DD |
 | end_date | string | No | YYYY-MM-DD |
 
-## Default Values
+### Default Values
 
 | Field | Default |
 |---|---|
 | threshold | 0.3 |
 | group_by | month |
 
-## API Dependency
+### API Dependency
 
-### GET /api/metrics/alerts
+#### GET /api/metrics/alerts
 
 ### Query Parameters
 
@@ -88,7 +88,7 @@ Below existing dashboard charts.
 | end_date | string |
 | group_by | "day" \| "week" \| "month" |
 
-## Table Columns
+### Table Columns
 
 | Column | Source Field |
 |---|---|
@@ -97,7 +97,7 @@ Below existing dashboard charts.
 | Rolling Average Previous 3 Periods | baseline_average |
 | Percentage Increase | increase_ratio |
 
-## Behavior Rules
+### Behavior Rules
 
 - Table must update when threshold changes.
 - Table must respect Feature 1 date filters.
@@ -107,52 +107,53 @@ Below existing dashboard charts.
 - Percentage increase should be displayed as a percentage value.
 - Results should remain visible until new request completes.
 
-## Empty State
+### Empty State
 
-If no anomalies exist:
-- Display explicit message:
-  "No anomalies detected for the selected threshold and date range."
+If no anomalies exist, display:
+
+"No anomalies detected for the selected threshold and date range."
 
 The component must not disappear.
 
 ---
 
-# Feature 3 — B2B vs B2C Comparison View
+## Feature 3 — B2B vs B2C Comparison View
 
-## Page Name
+### Page Name
 BusinessComparisonView
 
-## Route
+### Route
 /comparison
 
-## Purpose
+### Purpose
 Allows users to compare revenue performance between B2B and B2C business lines.
 
-## Layout
+### Layout
 
-### Top Section
+#### Top Section
 Shared date range filter.
 
-### Middle Section
+#### Middle Section
 Two side-by-side tables:
 - B2B top income categories
 - B2C top income categories
 
-### Bottom Section
+#### Bottom Section
 Single comparison chart for total income.
 
 ---
 
-## Shared Date Filter
+### Shared Date Filter
 
-### Inputs
+#### Inputs
 
 | Field | Type | Required |
 |---|---|---|
 | start_date | string | No |
 | end_date | string | No |
 
-### Rules
+#### Rules
+
 - Uses YYYY-MM-DD format.
 - Shared across all sections.
 - Applies to:
@@ -161,14 +162,105 @@ Single comparison chart for total income.
 
 ---
 
-## B2B Categories Table
+### B2B Categories Table
 
-### Endpoint
+#### Endpoint
 GET /api/metrics/categories/top
 
-### Required Query Params
+#### Required Query Params
 
 ```txt
 operation_type=income
 business_type=B2B
 limit=5
+```
+
+#### Columns
+
+| Column | Source |
+|---|---|
+| Category Name | category |
+| Total Income | total_amount |
+| Percentage of Group Total | calculated frontend value |
+
+---
+
+### B2C Categories Table
+
+#### Endpoint
+GET /api/metrics/categories/top
+
+#### Required Query Params
+
+```txt
+operation_type=income
+business_type=B2C
+limit=5
+```
+
+#### Columns
+
+| Column | Source |
+|---|---|
+| Category Name | category |
+| Total Income | total_amount |
+| Percentage of Group Total | calculated frontend value |
+
+---
+
+### Comparison Chart
+
+#### Purpose
+Visually compare total income between B2B and B2C.
+
+#### Data Source
+GET /api/metrics/categories/top
+
+#### Rules
+
+- Aggregate total_amount values for each business type.
+- Chart must clearly distinguish B2B total income and B2C total income.
+
+#### Suggested Visualization
+Bar chart.
+
+---
+
+### Facets Dependency
+
+#### GET /api/metrics/facets
+
+Used for:
+- available categories
+- valid min_date and max_date
+
+---
+
+### Empty States
+
+#### Empty Table
+Display:
+
+"No income category data available for selected range."
+
+#### Empty Chart
+Display:
+
+"No comparison data available."
+
+---
+
+### Loading States
+
+Each section should support:
+- loading state
+- empty state
+- error state
+
+---
+
+### Error Handling
+
+If an API request fails:
+- show a user-friendly error message
+- preserve previous successful data when possible
