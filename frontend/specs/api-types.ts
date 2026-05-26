@@ -1,4 +1,3 @@
-
 /**
  * Type of financial operation.
  * "income" for incoming funds, "outcome" for outgoing funds.
@@ -55,10 +54,7 @@ export interface AlertEntry {
 /**
  * Response for /api/metrics/alerts
  */
-export interface AlertsResponse {
-  /** List of detected anomalies. */
-  alerts: AlertEntry[];
-}
+export type AlertsResponse = AlertEntry[];
 
 /**
  * Entry for a single top category.
@@ -75,7 +71,4 @@ export interface CategoryEntry {
 /**
  * Response for /api/metrics/categories/top
  */
-export interface TopCategoriesResponse {
-  /** List of top categories. */
-  categories: CategoryEntry[];
-}
+export type TopCategoriesResponse = CategoryEntry[];
