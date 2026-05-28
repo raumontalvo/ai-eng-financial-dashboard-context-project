@@ -2,6 +2,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { type LucideIcon } from 'lucide-react'
+import React from 'react'
 
 interface KPICardProps {
   label: string
@@ -31,7 +32,7 @@ const variantStyles: Record<KPICardProps['variant'], { badge: string; icon: stri
   },
 }
 
-export function KPICard({ label, value, helperText, icon: Icon, variant, loading }: KPICardProps) {
+function KPICardComponent({ label, value, helperText, icon: Icon, variant, loading }: KPICardProps) {
   const styles = variantStyles[variant]
 
   if (loading) {
@@ -67,3 +68,5 @@ export function KPICard({ label, value, helperText, icon: Icon, variant, loading
     </Card>
   )
 }
+
+export const KPICard = React.memo(KPICardComponent)

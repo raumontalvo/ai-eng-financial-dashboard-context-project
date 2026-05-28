@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { type MonthlyDataPoint } from '@/lib/financial-types'
+
+import { memo } from "react";
 import {
   LineChart,
   Line,
@@ -23,13 +25,14 @@ interface TooltipPayload {
   color: string
 }
 
+
 interface CustomTooltipProps {
   active?: boolean
   payload?: TooltipPayload[]
   label?: string
 }
 
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+const CustomTooltip = memo(function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload?.length) return null
   const value = payload[0]?.value ?? 0
   return (
@@ -45,7 +48,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
       </div>
     </div>
   )
-}
+})
 
 export function ProfitPercentChart({ data, loading }: ProfitPercentChartProps) {
   if (loading) {

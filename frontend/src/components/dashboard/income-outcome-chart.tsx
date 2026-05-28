@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Skeleton } from '@/components/ui/skeleton'
 import { type MonthlyDataPoint } from '@/lib/financial-types'
 import { formatCurrency } from '@/lib/financial-utils'
+
+import { memo } from "react";
 import {
   LineChart,
   Line,
@@ -24,13 +26,14 @@ interface TooltipPayload {
   color: string
 }
 
+
 interface CustomTooltipProps {
   active?: boolean
   payload?: TooltipPayload[]
   label?: string
 }
 
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+const CustomTooltip = memo(function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload?.length) return null
   return (
     <div className="rounded-lg border border-border bg-card px-4 py-3 shadow-lg text-sm">
@@ -44,7 +47,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
       ))}
     </div>
   )
-}
+})
 
 export function IncomeOutcomeChart({ data, loading }: IncomeOutcomeChartProps) {
   if (loading) {
