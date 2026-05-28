@@ -40,3 +40,19 @@ Phase 2 and Phase 3 were committed locally.
 Phase 4 should be committed separately after these memory-bank files are completed.
 
 A GitHub permissions issue temporarily blocked additional pushes from the Codespace, but local commits are preserved.
+## Agent Skills Session
+
+Applied skills:
+- accessibility
+- react-best-practices
+- frontend-performance
+
+Changes made:
+- Installed accessibility and React best-practices skills.
+- Improved ARIA labels, semantic regions, skip link, accessible error state, chart labels, and loading/empty states.
+- Applied React performance best practices using memoized dashboard components and chart tooltips.
+- Explored the skills ecosystem and added frontend-performance as an additional relevant skill.
+- Authored a custom financial-dashboard-formatting skill.
+
+Verification:
+- npm run build passes.

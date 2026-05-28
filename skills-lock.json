@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "accessibility": {
+      "source": "dralgorhythm/claude-agentic-framework",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design/accessibility/SKILL.md",
+      "computedHash": "ef58e49108cb6f6b1c067942d61d41cf303276a88c8393778475c21990db13a6"
+    },
+    "frontend-performance": {
+      "source": "b-open-io/prompts",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-performance/SKILL.md",
+      "computedHash": "d2e33558ccf99b44fc48eebaefa53a46ad2f4463a86ae78c823f7e660cf114f8"
+    },
+    "react-best-practices": {
+      "source": "vercel/vercel-plugin",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "bdb13a3a239c067136b39cf77a34462ccc0dd4645d440362182409dcfd331221"
+    }
+  }
+}

@@ -2,15 +2,16 @@ import { KPICard } from './kpi-card'
 import { type KPIMetrics } from '@/lib/financial-types'
 import { formatCurrency, formatPercent } from '@/lib/financial-utils'
 import { TrendingUp, TrendingDown, DollarSign, BarChart2 } from 'lucide-react'
+import React from 'react'
 
 interface KPIRowProps {
   metrics: KPIMetrics | null
   loading?: boolean
 }
 
-export function KPIRow({ metrics, loading }: KPIRowProps) {
+function KPIRowComponent({ metrics, loading }: KPIRowProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4" role="list" aria-label="KPI cards row">
       <KPICard
         label="Total Income"
         value={metrics ? formatCurrency(metrics.totalIncome) : '—'}
@@ -46,3 +47,5 @@ export function KPIRow({ metrics, loading }: KPIRowProps) {
     </div>
   )
 }
+
+export const KPIRow = React.memo(KPIRowComponent)

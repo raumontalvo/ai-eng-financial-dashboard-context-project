@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Skeleton } from '@/components/ui/skeleton'
 import { type MonthlyDataPoint } from '@/lib/financial-types'
 import { formatCurrency } from '@/lib/financial-utils'
+
+import { memo } from "react";
 import {
   LineChart,
   Line,
@@ -24,13 +26,14 @@ interface TooltipPayload {
   color: string
 }
 
+
 interface CustomTooltipProps {
   active?: boolean
   payload?: TooltipPayload[]
   label?: string
 }
 
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+const CustomTooltip = memo(function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload?.length) return null
   return (
     <div className="rounded-lg border border-border bg-card px-4 py-3 shadow-lg text-sm">
@@ -44,12 +47,12 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
       ))}
     </div>
   )
-}
+})
 
 export function IncomeOutcomeChart({ data, loading }: IncomeOutcomeChartProps) {
   if (loading) {
     return (
-      <Card className="border-border/60">
+      <Card className="border-border/60" aria-busy="true" aria-label="Loading income vs. outcome chart">
         <CardHeader className="pb-4">
           <Skeleton className="h-5 w-52" />
           <Skeleton className="h-3 w-64 mt-1" />
@@ -64,25 +67,26 @@ export function IncomeOutcomeChart({ data, loading }: IncomeOutcomeChartProps) {
   const hasData = data.some((d) => d.income > 0 || d.outcome > 0)
 
   return (
-    <Card className="border-border/60">
+    <Card className="border-border/60" aria-label="Income vs. Outcome chart" tabIndex={0}>
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">Income vs. Outcome</CardTitle>
-        <CardDescription>Monthly revenue and expenditure evolution</CardDescription>
+        <CardTitle className="text-base font-semibold" id="income-outcome-title">Income vs. Outcome</CardTitle>
+        <CardDescription id="income-outcome-desc">Monthly revenue and expenditure evolution</CardDescription>
       </CardHeader>
       <CardContent>
         {!hasData ? (
-          <div className="flex h-[280px] items-center justify-center text-muted-foreground text-sm">
+          <div className="flex h-[280px] items-center justify-center text-muted-foreground text-sm" role="status" aria-live="polite">
             No data available to display
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+            <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }} aria-labelledby="income-outcome-title" aria-describedby="income-outcome-desc">
               <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" strokeOpacity={0.6} />
               <XAxis
                 dataKey="month"
                 tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
                 axisLine={false}
                 tickLine={false}
+                aria-label="Month"
               />
               <YAxis
                 tick={{ fontSize: 11, fill: 'var(--color-muted-foreground)' }}
@@ -90,6 +94,7 @@ export function IncomeOutcomeChart({ data, loading }: IncomeOutcomeChartProps) {
                 tickLine={false}
                 tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
                 width={48}
+                aria-label="Value in thousands of dollars"
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend
@@ -105,6 +110,7 @@ export function IncomeOutcomeChart({ data, loading }: IncomeOutcomeChartProps) {
                 strokeWidth={2}
                 dot={{ r: 3, fill: 'var(--chart-income)', strokeWidth: 0 }}
                 activeDot={{ r: 5, strokeWidth: 0 }}
+                aria-label="Income line"
               />
               <Line
                 type="monotone"
@@ -114,6 +120,7 @@ export function IncomeOutcomeChart({ data, loading }: IncomeOutcomeChartProps) {
                 strokeWidth={2}
                 dot={{ r: 3, fill: 'var(--chart-outcome)', strokeWidth: 0 }}
                 activeDot={{ r: 5, strokeWidth: 0 }}
+                aria-label="Outcome line"
               />
             </LineChart>
           </ResponsiveContainer>
