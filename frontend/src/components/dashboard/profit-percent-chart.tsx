@@ -50,7 +50,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 export function ProfitPercentChart({ data, loading }: ProfitPercentChartProps) {
   if (loading) {
     return (
-      <Card className="border-border/60">
+      <Card className="border-border/60" aria-busy="true" aria-label="Loading profit margin chart">
         <CardHeader className="pb-4">
           <Skeleton className="h-5 w-52" />
           <Skeleton className="h-3 w-64 mt-1" />
@@ -65,25 +65,26 @@ export function ProfitPercentChart({ data, loading }: ProfitPercentChartProps) {
   const hasData = data.some((d) => d.profitPercent !== 0)
 
   return (
-    <Card className="border-border/60">
+    <Card className="border-border/60" aria-label="Profit margin chart" tabIndex={0}>
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">Profit Margin %</CardTitle>
-        <CardDescription>Monthly profit as a percentage of total income</CardDescription>
+        <CardTitle className="text-base font-semibold" id="profit-margin-title">Profit Margin %</CardTitle>
+        <CardDescription id="profit-margin-desc">Monthly profit as a percentage of total income</CardDescription>
       </CardHeader>
       <CardContent>
         {!hasData ? (
-          <div className="flex h-[280px] items-center justify-center text-muted-foreground text-sm">
+          <div className="flex h-[280px] items-center justify-center text-muted-foreground text-sm" role="status" aria-live="polite">
             No data available to display
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+            <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }} aria-labelledby="profit-margin-title" aria-describedby="profit-margin-desc">
               <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" strokeOpacity={0.6} />
               <XAxis
                 dataKey="month"
                 tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
                 axisLine={false}
                 tickLine={false}
+                aria-label="Month"
               />
               <YAxis
                 tick={{ fontSize: 11, fill: 'var(--color-muted-foreground)' }}
@@ -92,6 +93,7 @@ export function ProfitPercentChart({ data, loading }: ProfitPercentChartProps) {
                 tickFormatter={(v) => `${v.toFixed(0)}%`}
                 width={40}
                 domain={['auto', 'auto']}
+                aria-label="Profit percent"
               />
               <ReferenceLine y={0} stroke="var(--color-border)" strokeDasharray="4 4" />
               <Tooltip content={<CustomTooltip />} />
@@ -103,6 +105,7 @@ export function ProfitPercentChart({ data, loading }: ProfitPercentChartProps) {
                 strokeWidth={2}
                 dot={{ r: 3, fill: 'var(--chart-profit)', strokeWidth: 0 }}
                 activeDot={{ r: 5, strokeWidth: 0 }}
+                aria-label="Profit percent line"
               />
             </LineChart>
           </ResponsiveContainer>
